@@ -29,9 +29,9 @@ class App extends Component {
 
   render(){
 
-    const repoNames = this.state.repos.map(function(repo, i) {
-      return <li key={i} style={{ color:'green' }}>{repo.name}</li>
-    });
+    // const repoNames = this.state.repos.map(function(repo, i) {
+    //   return <li key={i} style={{ color:'green' }}>{repo.name}</li>
+    // });
 
     return (
       // <div className='button__container'>
@@ -130,7 +130,7 @@ class Repository extends Component{
     render(){
 
         const repoNames = this.state.repos.map(function(repo, i) {
-            return <a href="#" key={i} className="list-group-item list-group-item-action">{repo.name}</a>
+            return <a key={i} className="list-group-item list-group-item-action">{repo.name}</a>
         });
 
         return(
