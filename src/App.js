@@ -50,7 +50,7 @@ class App extends Component {
       // </div>
 
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-3">
             <div className="panel">
               <div className="panel-header">
                 MY PROFILE
@@ -61,7 +61,7 @@ class App extends Component {
             </div>
           </div>
 
-          <div className="col-md-6">
+          <div className="col-md-3">
             <div className="panel">
               <div className="panel-header">
                 REPOS
@@ -72,6 +72,17 @@ class App extends Component {
             </div>
 
           </div>
+
+            <div className="col-md-6">
+                <div className="panel">
+                    <div className="panel-header">
+                        COMMITS
+                    </div>
+                    <div className="panel-body">
+                        <RepoCommits  />
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -115,10 +126,12 @@ class Repository extends Component{
     constructor(){
         super();
         this.state = {
-            repos: []
+            repos: [],
+            commits: []
         }
 
         this.handleGetRepo = this.handleGetRepo.bind(this);
+        this.handleGetRepoCommits = this.handleGetRepoCommits.bind(this);
     }
 
     handleGetRepo ()
@@ -127,16 +140,49 @@ class Repository extends Component{
             .then( response =>  this.setState({ repos: response.data }))
     }
 
+    handleGetRepoCommits (i)
+    {
+        const repo = this.state.repos[i];
+        axios.get('https://api.github.com/repos/gaelwm/'+repo.name+'/commits')
+            .then(response => this.setState({commits: response.data }));
+    }
+
     render(){
 
+        let _this = this;
+
         const repoNames = this.state.repos.map(function(repo, i) {
-            return <a key={i} className="list-group-item list-group-item-action">{repo.name}</a>
+            return <a key={i} onClick={_this.handleGetRepoCommits(i)} className="list-group-item list-group-item-action">{repo.name}</a>
+        });
+
+        return(
+            <div>
+                <div className="list-group">
+                    {repoNames}
+                    <button className="btn btn-primary" onClick={this.handleGetRepo}>Get My Repositories</button>
+                </div>
+            </div>
+        )
+    }
+}
+
+class RepoCommits extends Repository {
+    constructor(){
+        super();
+
+        this.handleGetRepoCommits = this.handleGetRepoCommits.bind(this);
+    }
+
+
+    render(){
+
+        const mycommits = this.state.commits.map(function(commit, i) {
+            return <a key={i} className="list-group-item list-group-item-action">{commit.commit.message}</a>
         });
 
         return(
             <div className="list-group">
-                {repoNames}
-                <button className="btn btn-primary" onClick={this.handleGetRepo}>Get My Repositories</button>
+                {mycommits}
             </div>
         )
     }
