@@ -129,7 +129,7 @@ class Repository extends Component{
             repos: [],
             commits: []
         }
-
+    
         this.handleGetRepo = this.handleGetRepo.bind(this);
         this.handleGetRepoCommits = this.handleGetRepoCommits.bind(this);
     }
@@ -148,9 +148,7 @@ class Repository extends Component{
     }
 
     render(){
-
         let _this = this;
-
         const repoNames = this.state.repos.map(function(repo, i) {
             return <a key={i} onClick={_this.handleGetRepoCommits(i)} className="list-group-item list-group-item-action">{repo.name}</a>
         });
